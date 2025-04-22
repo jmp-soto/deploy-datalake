@@ -1,29 +1,25 @@
-name: Cloudformation deploymente
+name: Sync File to S3
 
 on:
-  pull_request:
-    types: [closed]
-    branches:
-      -qa
-      -develop
-      -prod
   push:
     branches:
-      -develop
+      - develop # Solo se ejecutará cuando haya cambios en la rama main
 
-permission:
+permissions:
   id-token: write
   contents: read
 
 jobs:
-  deploy:
-    runs-on: ubuntu-lastest
+  sync:
+    runs-on: ubuntu-latest
     env:
-      REGION: us-east-1
+      AWS_BUCKET_NAME: "prueba-exampe-josemaria-git"
+      REGION: "us-east-1"
     steps:
-      - name: Checkout Repo
-        uses: actions/checkout@v2 
 
-      - name: setear Parameters
+      - name: Checkout Repo
+        uses: actions/checkout@v2
+
+      - name: Set Parametros
         run: |
           echo "$REGION"
