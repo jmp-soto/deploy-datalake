@@ -4,6 +4,8 @@ on:
   push:
     branches:
       - develop # Solo se ejecutará cuando haya cambios en la rama main
+      - qa
+      - prod
 
 permissions:
   id-token: write
@@ -23,3 +25,30 @@ jobs:
       - name: Set Parametros
         run: |
           echo "$REGION"
+      
+      - name: Set Parameters File
+        run: |
+          if [[ "${{ github.ref_name }}" == "develop" ]]; then
+            echo "PARAMETERS_FILE=./parameters-dev.json" >> $GITHUB_ENV
+          elif [[ "${{ github.ref_name }}" == "qa" ]]; then
+            echo "PARAMETERS_FILE=./parameters-qa.json" >> $GITHUB_ENV
+          elif [[ "${{ github.ref_name }}" == "prod" ]]; then
+            echo "PARAMETERS_FILE=./parameters-prod.json" >> $GITHUB_ENV
+          else
+            echo "No es la rama correcta" >> $GITHUB_ENV
+          fi
+
+      - name: Load JSON into Environment Variables
+        run: |
+          for row in $(jq -c '.[]' $PARAMETERS_FILE); do
+            key=$(echo $row | jq -r 'keys[0]')
+            value=$(echo $row | jq -r '.[]')
+            echo "${key}=${value}" >> $GITHUB_ENV
+          done
+          echo "Loaded variables from $PARAMETERS_FILE."
+      
+      - name: Validate Variables
+        run: |
+          echo "team=$team"
+          echo "enviroment=$enviroment"
+          echo "cuenta=$cuenta"

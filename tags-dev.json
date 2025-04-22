@@ -1,0 +1,34 @@
+
+[
+    {
+      "Key": "I_Area",
+      "Value": "DIV. Data & Analitica"
+    },
+    {
+        "Key": "enviroment",
+        "Value": "dev"
+    },
+    {
+      "Key": "I_PROYECTO",
+      "Value": "Manufactura & Distribución"
+    },
+    {
+      "Key": "I_RESPONSABLE_PO",
+      "Value": "Carlos Amarilla"
+    },
+    {
+      "Key": "I_RESPONSABLE_TECNICO",
+      "Value": "Ricardo Linares"
+    },
+    {
+      "Key": "I_DEVELOP",
+      "Value": "Josemaria Paucar"
+    },
+    {
+      "Key": "I_RESPONSABLE_PROYECTO",
+      "Value": "Nicolas Icardi"
+    }
+  ]
+  
+  
+  
