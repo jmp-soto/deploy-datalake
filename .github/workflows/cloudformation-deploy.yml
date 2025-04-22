@@ -53,7 +53,7 @@ jobs:
           echo "team=$team"
           echo "enviroment=$enviroment"
           echo "cuenta=$cuenta"
-          echo "bucket_artifact=$bucket_artifact"
+          echo "bucketartifact=$bucketartifact"
           echo "$JUANPI"
 
       - name: Process Tags
@@ -87,5 +87,5 @@ jobs:
             --parameter-overrides \
                 pTeamName=$team \
                 Stage=$enviroment \
-                bucket_artifact=$bucket_artifact
+                bucketartifact=$bucketartifact
           aws cloudformation describe-stack-events --stack-name $S3_STACK_NAME --max-items 5
