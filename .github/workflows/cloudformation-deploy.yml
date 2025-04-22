@@ -21,6 +21,6 @@ jobs:
     env:
       REGION: us-east-1
     steps:
-      -name: Checkout Repo
-      uses: actions/checkout@v2 
+      - name: Checkout Repo
+        uses: actions/checkout@v2 
 
