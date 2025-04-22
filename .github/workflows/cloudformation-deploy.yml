@@ -16,7 +16,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       AWS_BUCKET_NAME: "prueba-exampe-josemaria-git"
-      REGION: "us-east-1345435"
+      REGION: "us-east-1"
       JUANPI: ${{ vars.JUANPI }}
     steps:
 
