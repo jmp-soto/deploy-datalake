@@ -1,0 +1,26 @@
+name: Cloudformation deploymente
+
+on:
+  pull_request:
+    types: [closed]
+    branches:
+      -qa
+      -develop
+      -prod
+  push:
+    branches:
+      -develop
+
+permission:
+  id-token: write
+  contents: read
+
+jobs:
+  deploy:
+    runs-on: ubuntu-lastest
+    env:
+      REGION: us-east-1
+    steps:
+      -name: Checkout Repo
+      uses: actions/checkout@v2 
+
