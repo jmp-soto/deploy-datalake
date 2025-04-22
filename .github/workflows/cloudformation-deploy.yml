@@ -53,4 +53,38 @@ jobs:
           echo "team=$team"
           echo "enviroment=$enviroment"
           echo "cuenta=$cuenta"
+          echo "bucket_artifact=$bucket_artifact"
           echo "$JUANPI"
+
+      - name: Process Tags
+        run: |
+          # Convertir el JSON a pares de clave=valor escapados
+          JSON=$(cat tags.json)
+          TAGS=$(echo "$JSON" | jq -r 'map("\(.Key)=\(.Value|gsub(" "; "_")|gsub("&"; "y"))") | join(" ")')
+          echo "TAGS=${TAGS}" >> $GITHUB_ENV
+          echo "Processed tags: ${TAGS}"
+
+      - name: connect to AWS
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          role-session-name: awsroledeploy
+          role-to-assume: ${{ secrets.AWS_IAM_ROLE }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      - name: Deploy S3 de juanpi
+        id: s3
+        shell: bash
+        if: contains(github.event.head_commit.message, '-s3') || contains(github.event.head_commit.message, '-all')
+        env:
+          S3_STACK_NAME: da-juanpi-s3
+        run: |
+          aws cloudformation deploy --template-file template/s3.yaml \
+            --region $REGION \
+            --stack-name $S3_STACK_NAME \
+            --capabilities CAPABILITY_NAMED_IAM \
+            --no-fail-on-empty-changeset \
+            --parameter-overrides \
+                pTeamName=$team \
+                Stage=$enviroment \
+                bucket_artifact=$bucket_artifact
+          aws cloudformation describe-stack-events --stack-name $S3_STACK_NAME --max-items 5

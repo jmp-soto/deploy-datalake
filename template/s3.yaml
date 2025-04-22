@@ -1,0 +1,20 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: Template para crear un único bucket S3 con subdirectorios específicos
+
+Parameters:
+  pTeamName:
+    Description: "Branch Name(all lowercase, no symbols or spaces)"
+    Type: String
+  Stage:
+    Description: "Branch Name(all lowercase, no symbols or spaces)"
+    Type: String
+  bucket_artifact:
+    Description: "Branch Name(all lowercase, no symbols or spaces)"
+    Type: String
+
+Resources:
+  tablass3:
+    Type: 'AWS::S3::Bucket'
+    DeletionPolicy: Retain
+    Properties:
+      BucketName: !Ref bucket_artifact
