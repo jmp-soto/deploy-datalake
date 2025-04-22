@@ -11,8 +11,9 @@ Parameters:
   bucket_artifact:
     Description: "Branch Name(all lowercase, no symbols or spaces)"
     Type: String
-
+    
 Resources:
+
   tablass3:
     Type: 'AWS::S3::Bucket'
     DeletionPolicy: Retain
