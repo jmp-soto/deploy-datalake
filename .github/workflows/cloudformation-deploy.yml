@@ -17,6 +17,7 @@ jobs:
     env:
       AWS_BUCKET_NAME: "prueba-exampe-josemaria-git"
       REGION: "us-east-1345435"
+      JUANPI : ${env.JUANPI}
     steps:
 
       - name: Checkout Repo
@@ -52,3 +53,4 @@ jobs:
           echo "team=$team"
           echo "enviroment=$enviroment"
           echo "cuenta=$cuenta"
+          echo "$JUANPI"
