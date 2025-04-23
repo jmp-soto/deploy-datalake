@@ -1,7 +1,8 @@
 name: Sync File to S3
 
 on:
-  push:
+  pull_request:
+    types: [closed]
     branches:
       - develop # Solo se ejecutará cuando haya cambios en la rama main
       - qa
