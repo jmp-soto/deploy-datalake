@@ -7,21 +7,24 @@ on:
       - qa
       - prod
 
-permissions:
-  id-token: write
-  contents: read
+
 
 jobs:
   sync:
+    if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
+    
     enviroment:
-      - name: $ {{ref.branch}}
+      name: $ {{ github.base_ref }}
+    permissions:
+      id-token: write
+      contents: read
+    
     env:
       AWS_BUCKET_NAME: "prueba-exampe-josemaria-git"
-      REGION: "us-east-1"
-      JUANPI: ${{ vars.JUANPI }}
-    steps:
+      REGION: ${{ secrets.AWS_REGION }}
 
+    steps:
       - name: Checkout Repo
         uses: actions/checkout@v2
 
