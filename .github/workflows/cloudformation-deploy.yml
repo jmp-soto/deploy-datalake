@@ -14,6 +14,8 @@ permissions:
 jobs:
   sync:
     runs-on: ubuntu-latest
+    enviroment:
+      - name: $ {{ref.branch}}
     env:
       AWS_BUCKET_NAME: "prueba-exampe-josemaria-git"
       REGION: "us-east-1"
@@ -73,6 +75,25 @@ jobs:
 
       - name: Deploy S3 de juanpi
         id: s3
+        shell: bash
+        if: contains(github.event.head_commit.message, '-s3') || contains(github.event.head_commit.message, '-all')
+        env:
+          S3_STACK_NAME: da-juanpi-s3
+        run: |
+          aws cloudformation deploy --template-file template/s3.yaml \
+            --region $REGION \
+            --stack-name $S3_STACK_NAME \
+            --capabilities CAPABILITY_NAMED_IAM \
+            --no-fail-on-empty-changeset \
+            --tags $TAGS \
+            --parameter-overrides \
+                pTeamName=$team \
+                Stage=$enviroment \
+                bucketartifact=$bucketartifact
+          aws cloudformation describe-stack-events --stack-name $S3_STACK_NAME --max-items 5
+
+      - name: Deploy S3 de lambda
+        id: lambda
         shell: bash
         if: contains(github.event.head_commit.message, '-s3') || contains(github.event.head_commit.message, '-all')
         env:
