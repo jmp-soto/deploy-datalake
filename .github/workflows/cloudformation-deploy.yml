@@ -1,7 +1,8 @@
 name: Sync File to S3
 
 on:
-  push:
+  pull_request:
+    types: [closed]
     branches:
       - develop # Solo se ejecutará cuando haya cambios en la rama main
       - qa
@@ -98,7 +99,7 @@ jobs:
       - name: Deploy S3 de lambda
         id: lambda
         shell: bash
-        if: contains(github.event.head_commit.message, '-s3') || contains(github.event.head_commit.message, '-all')
+        if: contains(github.event.pull_request.title, '-s3') || contains(github.event.pull_request.title, '-all')
         env:
           S3_STACK_NAME: da-juanpi-s3
         run: |
