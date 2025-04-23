@@ -4,7 +4,7 @@ on:
   pull_request:
     types: [closed]
     branches:
-      - develop # Solo se ejecutará cuando haya cambios en la rama main
+      - develop # Solo se ejecutará cuando
       - qa
       - prod
 
@@ -15,7 +15,7 @@ jobs:
     if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
     environment:
-      name: $ {{ github.base_ref }}
+      name: ${{ github.base_ref }}
     
     permissions:
       id-token: write
