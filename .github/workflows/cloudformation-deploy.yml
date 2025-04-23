@@ -71,7 +71,8 @@ jobs:
           echo "Processed tags: ${TAGS}"
 
       - name: connect to AWS
-        uses: aws-actions/configure-aws-credentials@v1
+        id: creds
+        uses: aws-actions/configure-aws-credentials@v3
         with:
           role-session-name: awsroledeploy
           role-to-assume: ${{ secrets.AWS_IAM_ROLE }}
