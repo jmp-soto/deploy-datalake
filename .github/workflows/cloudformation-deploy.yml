@@ -14,9 +14,9 @@ jobs:
   sync:
     if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
-    
-    enviroment:
+    environment:
       name: $ {{ github.base_ref }}
+    
     permissions:
       id-token: write
       contents: read
