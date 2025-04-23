@@ -9,7 +9,7 @@
         "cuenta": "12343333"
     },
     {
-        "bucket_artifact": "bucket-athena-juanpii"
+        "bucketartifact": "bucket-athena-juanpii"
     }
 
 ]

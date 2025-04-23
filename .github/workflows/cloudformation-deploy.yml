@@ -1,25 +1,31 @@
 name: Sync File to S3
 
 on:
-  push:
+  pull_request:
+    types: [closed]
     branches:
       - develop # Solo se ejecutará cuando haya cambios en la rama main
       - qa
       - prod
 
-permissions:
-  id-token: write
-  contents: read
+
 
 jobs:
   sync:
+    if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
+    environment:
+      name: $ {{ github.base_ref }}
+    
+    permissions:
+      id-token: write
+      contents: read
+    
     env:
       AWS_BUCKET_NAME: "prueba-exampe-josemaria-git"
-      REGION: "us-east-1"
-      JUANPI: ${{ vars.JUANPI }}
-    steps:
+      REGION: ${{ secrets.AWS_REGION }}
 
+    steps:
       - name: Checkout Repo
         uses: actions/checkout@v2
 
@@ -75,6 +81,25 @@ jobs:
         id: s3
         shell: bash
         if: contains(github.event.head_commit.message, '-s3') || contains(github.event.head_commit.message, '-all')
+        env:
+          S3_STACK_NAME: da-juanpi-s3
+        run: |
+          aws cloudformation deploy --template-file template/s3.yaml \
+            --region $REGION \
+            --stack-name $S3_STACK_NAME \
+            --capabilities CAPABILITY_NAMED_IAM \
+            --no-fail-on-empty-changeset \
+            --tags $TAGS \
+            --parameter-overrides \
+                pTeamName=$team \
+                Stage=$enviroment \
+                bucketartifact=$bucketartifact
+          aws cloudformation describe-stack-events --stack-name $S3_STACK_NAME --max-items 5
+
+      - name: Deploy S3 de lambda
+        id: lambda
+        shell: bash
+        if: contains(github.event.pull_request.title, '-s3') || contains(github.event.pull_request.title, '-all')
         env:
           S3_STACK_NAME: da-juanpi-s3
         run: |
