@@ -4,7 +4,7 @@ on:
   pull_request:
     types: [closed]
     branches:
-      - develop # Solo se ejecutará cuando haya cambios en la rama main
+      - develop # Solo se ejecutará cuando
       - qa
       - prod
 
@@ -15,7 +15,7 @@ jobs:
     if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
     environment:
-      name: $ {{ github.base_ref }}
+      name: ${{ github.base_ref }}
     
     permissions:
       id-token: write
@@ -71,7 +71,8 @@ jobs:
           echo "Processed tags: ${TAGS}"
 
       - name: connect to AWS
-        uses: aws-actions/configure-aws-credentials@v1
+        id: creds
+        uses: aws-actions/configure-aws-credentials@v3
         with:
           role-session-name: awsroledeploy
           role-to-assume: ${{ secrets.AWS_IAM_ROLE }}
